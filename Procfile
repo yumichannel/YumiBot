@@ -1,1 +1,1 @@
-worker: node view/mybot.js
+worker: npm start
