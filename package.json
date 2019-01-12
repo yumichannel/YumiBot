@@ -1,11 +1,11 @@
 {
-  "name":"YumiBot",
-  "description":"",
+  "name": "YumiBot",
+  "description": "",
   "version": "0.0.0",
-  "main":"view/mybot.js",
+  "main": "view/mybot.js",
   "engines": {
-    "node":"10.x",
-    "npm":"*"
+    "node": "10.x",
+    "npm": "*"
   },
   "scripts": {
     "start": "node view/mybot.js"
@@ -16,6 +16,7 @@
     "discord-rpc": "^3.0.1",
     "discord.js": "^11.4.2",
     "dom-parser": "^0.1.5",
+    "dotenv": "^6.2.0",
     "ffmpeg-binaries": "^4.0.0",
     "gifencoder": "^1.1.0",
     "node-opus": "^0.3.1",
