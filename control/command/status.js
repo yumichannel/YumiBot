@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const child = require('child_process')
 module.exports={
     info:{
         name:"status",
@@ -16,6 +17,7 @@ module.exports={
         em.addField("Server handle",message.client.guilds.size,true)
         em.addField("Channel handle",message.client.channels.size,true)
         em.addField("Memory usage",(process.memoryUsage().heapUsed/1024/1024).toFixed(2)+" MB",true)
+        em.addField("Heart beat",message.client.ping)
         message.channel.send(em)
     }
 }

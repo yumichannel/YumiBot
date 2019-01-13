@@ -3,3 +3,6 @@ New TextDocument.bat
 image/triggered.psd
 .env
 view/mybot.js
+control/command/translate.js
+control/command/reload.js
+test.js

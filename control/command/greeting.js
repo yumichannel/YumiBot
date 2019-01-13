@@ -4,6 +4,9 @@ module.exports={
     info:{
         name:"greeting",
         description:"Manage custom greeting message.",
+        usage:"`prefix`greeting `add <message>`|`delete <index>`|`list`",
+        fusage:"`message`: your custom message, use `@user` for mention new member\n"
+        +"`index`: index of message. Check with `list` ",
         category:"admin"
     },
     run(message,args){

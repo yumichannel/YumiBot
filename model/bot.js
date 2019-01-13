@@ -125,7 +125,6 @@ module.exports = class Bot{
                     command.run(message,args);
                 } catch (error) {
                     console.log(error);
-                    
                 }
             } 
         })

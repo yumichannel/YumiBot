@@ -4,6 +4,8 @@ module.exports={
     info:{
         name: "suck",
         description:"SUCK!",
+        nsfw:false,
+        usage: "`prefix`suck <@somebody>",
         category:"image"
     },
     async run(message,args){

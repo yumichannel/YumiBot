@@ -5,14 +5,14 @@ module.exports = {
         name:"reload",
         category:"uncategory",
         description:"Reload commands",
-        Category:""
+        category:"owner"
     },
     run(message,args){
-        // message.client.commands.array().forEach(element => {
-        //     delete require.cache[require.resolve(`../command/${element.info.name}.js`)]
-        //     message.client.commands.delete(element.info.name);
-        // });
-        // load(message.client.commands)
-        // message.channel.send("loade commands")
+        message.client.commands.array().forEach(element => {
+            delete require.cache[require.resolve(`../command/${element.info.name}.js`)]
+            message.client.commands.delete(element.info.name);
+        });
+        load(message.client.commands)
+        message.channel.send("loade commands")
     }
 }

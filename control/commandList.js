@@ -1,7 +1,7 @@
 module.exports = function(embed,collection,channel){
     embed.setTitle("List of command")
     embed.setURL("http://youtube.com/c/YumiNightcoreFC")
-    embed.setDescription("use `<prefix><commandname> help` for info.\nDefault prefix: `...`")
+    embed.setDescription("use `<prefix><commandname> help` for info.\nDefault prefix: `...`\nCheck your current prefix:`...prefix`")
     embed.setColor([color,color,color])
     const list = collection.array();
     var color = Math.floor(Math.random()*255);
