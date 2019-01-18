@@ -6,3 +6,5 @@ view/mybot.js
 control/command/translate.js
 control/command/reload.js
 test.js
+test.html
+image.png

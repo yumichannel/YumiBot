@@ -170,7 +170,7 @@ module.exports={
         }
     },
     async run(message,args){
-        return message.channel.send("```This feature is not available```");
+        // return message.channel.send("```This feature is not available```");
         var option = args.split(' ')
         try {
             this.commands[option[0]](message)

@@ -11,7 +11,7 @@ module.exports = class Bot{
         this.cooldowns = new Discord.Collection();
         this.client.music = new Discord.Collection();
         this.client.redis = require('redis').createClient(config.redis)
-        this.client.on('ready',async ()=>{
+        this.client.on('ready',()=>{
             loadCommand(this.client.commands)
             this.client.redis.get("prefix",(err,rep)=>{
                 this.client.prefixlist = JSON.parse(rep)
