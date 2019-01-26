@@ -11,6 +11,6 @@ module.exports={
         // cmd.exec("ping steamcommunity.com",(error,stdout,stderr)=>{
         //     message.channel.send(stdout)
         // })
-        message.channel.send("pong!")
+        message.channel.send(message.client.ping+" pong!");
     }
 }  

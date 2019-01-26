@@ -7,7 +7,8 @@ module.exports={
         description:"play music from youtube",
         usage:"",
         nfsw:false,
-        cooldown: 0
+        cooldown: 0,
+        ishide: true
     },
     commands:{
         'status':msg=>{
@@ -170,7 +171,7 @@ module.exports={
         }
     },
     async run(message,args){
-        // return message.channel.send("```This feature is not available```");
+        return message.channel.send("```This feature is not available```");
         var option = args.split(' ')
         try {
             this.commands[option[0]](message)

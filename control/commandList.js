@@ -7,7 +7,7 @@ module.exports = function(embed,collection,channel){
     var color = Math.floor(Math.random()*255);
     var categories = {}
     list.forEach(command => {
-        if(command.info.category!="owner"){
+        if(command.info.category!="owner" && command.info.ishide!=true){
             if(!categories[command.info.category]) categories[command.info.category]=[]
             categories[command.info.category].push(command.info.name)
         }

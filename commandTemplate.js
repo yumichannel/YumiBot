@@ -5,7 +5,8 @@ module.exports = {
         description: "",
         nsfw: false,
         usage: "",
-        fusage:""
+        fusage:"",
+        ishide: false
     },
     run(message,args){
         // Main code

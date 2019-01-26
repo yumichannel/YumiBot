@@ -5,7 +5,8 @@ module.exports={
     info:{
         name:'thanoshii',
         description:"Thanos turn u to dust",
-        category:"image"
+        category:"image",
+        ishide: true
     },
     async run(message,args){
         const canvas = Canvas.createCanvas(200,200)

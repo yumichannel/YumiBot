@@ -11,10 +11,16 @@ module.exports = class Bot{
         this.cooldowns = new Discord.Collection();
         this.client.music = new Discord.Collection();
         this.client.redis = require('redis').createClient(config.redis)
+        this.client.blacklist = new Discord.Collection();
         this.client.on('ready',()=>{
             loadCommand(this.client.commands)
             this.client.redis.get("prefix",(err,rep)=>{
                 this.client.prefixlist = JSON.parse(rep)
+                console.log("Loaded prefix list")
+            })
+            this.client.redis.get("blacklist",(err,rep)=>{
+                this.client.blacklist = JSON.parse(rep)
+                console.log("Loaded blacklist")
             })
             var date = new Date()
             this.client.uptimes = `${date.getUTCHours()<10?"0"+date.getUTCHours():date.getUTCHours()}:${date.getUTCMinutes()<10?"0"+date.getUTCMinutes():date.getUTCMinutes()}:${date.getUTCSeconds()<10?"0"+date.getUTCSeconds():date.getUTCSeconds()} UTC`
@@ -39,7 +45,7 @@ module.exports = class Bot{
             if(channel==undefined) return
             this.client.redis.get("welcome",(err,reply)=>{
                 let list = JSON.parse(reply.toString());
-                let pos = list.findIndex(m=>m.id==guild.id)
+                let pos = list.findIndex(m=>m.id==member.guild.id)
                 if(pos==-1) return
                 let num = list[pos].list.length
                 if(num<1){

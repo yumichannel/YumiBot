@@ -4,18 +4,24 @@ const Gif = require('gifencoder')
 const Discord = require('discord.js')
 module.exports = {
     info: {
-        name: "spinme",
+        name: "spin",
         category: "image",
         description: "Spin you 360 degree",
         nsfw: false,
-        usage: "",
-        fusage:""
+        usage: "`prefix`spin <orTagSomeone>",
+        fusage:"`orTagSomeone`: just mention a person and they will spin :keke:"
     },
     async run(message,args){
         // Main code
-        var {buffer} = await snekfetch.get(message.author.displayAvatarURL.replace('=2048','=256'));
-        var avatar = await Canvas.loadImage(buffer)
-        var canvas = Canvas.createCanvas('200','200');
+        if(args==""){
+            const {body:buffer} = await snekfetch.get(message.author.displayAvatarURL.replace('=2048','=256'));
+            var avatar = await Canvas.loadImage(buffer)
+        }else{
+            const {body:buffer2} = await snekfetch.get(message.mentions.members.first().user.displayAvatarURL.replace("=2048","=256"));
+            var avatar = await Canvas.loadImage(buffer2)
+        }
+        
+        var canvas = Canvas.createCanvas(200,200);
         var context = canvas.getContext('2d')
         var encoder = new Gif(200,200)
         var radius = 0;
@@ -23,12 +29,12 @@ module.exports = {
         encoder.setRepeat(0);
         encoder.setDelay(50);
         encoder.setQuality(5);
-
         context.translate(100, 100);
-        while(radius<1){
+        while(radius<10){
             context.rotate(radius);
-            context.drawImage(avatar, -100, -100, 200, 200);
+            context.drawImage(avatar, -150, -150, 300, 300);
             encoder.addFrame(context)
+            radius+=0.2
         }
         encoder.finish();
         var buf = encoder.out.getData();
