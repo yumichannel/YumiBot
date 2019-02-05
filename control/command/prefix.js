@@ -6,7 +6,9 @@ module.exports={
         description: "Set custom prefix for your server",
         usage: "`prefix`prefix <newprefix>",
         category:"admin",
-        fusage:"`newprefix` is your custom prefix. Be sure that no bot is using that prefix."
+        fusage:"`newprefix` is your custom prefix.\n"+
+        "*!!!Don't use the prefix that used by other bots*",
+        cooldown:1
     },
     run(message,args){
         if(!message.member.permissions.has("ADMINISTRATOR")) return

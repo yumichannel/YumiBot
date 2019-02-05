@@ -12,7 +12,7 @@ module.exports={
         em.setThumbnail(message.client.user.displayAvatarURL)
         em.setTitle("Status of Bot")
         em.setDescription("--------------------------------------")
-        em.addField("Developer",process.env.devname||"unknown",true)
+        em.addField("Developer",process.env.devname||`<@${process.env.owner}>`||"unknown",true)
         em.addField("Uptime",message.client.uptimes,true)
         em.addField("Server handle",message.client.guilds.size,true)
         em.addField("Channel handle",message.client.channels.size,true)

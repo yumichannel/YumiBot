@@ -8,18 +8,11 @@ module.exports={
         category:"image",
         nsfw:false,
         description:"show your profile",
-        usage:"`...profile` or `...profile <@user>`"
+        usage:"`prefix`watashi"
     },
     async run(message,args){
-        var uid;
-        if(args==""){
-            uid = message.author.id;
-        }else{
-            if(args.startsWith("<@!")) uid = args.substring(3,args.length-1);
-            else if(args.startsWith("<@")) uid = args.substring(2,args.length-1);
-            else return message.channel.send("no user provided.");
-        }
-        var user = message.guild.members.get(uid);
+        return message.channel.send("This feature is coming soon",{code:true})
+        var uid = message.author.id
 
 
         const {body: buffer} = await snekfetch.get(user.user.displayAvatarURL.replace("=2048","=256"));

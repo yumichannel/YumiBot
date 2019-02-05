@@ -6,7 +6,7 @@ module.exports = {
         nsfw: false,
         usage: "`prefix`hello",
         fusage: "",
-        cooldown: 10
+        cooldown: 5
     },
     run(message,args){
         // Main code

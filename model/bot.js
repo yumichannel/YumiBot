@@ -4,34 +4,26 @@ const loadCommand = require('../control/loadCommand.js');
 const help = require('../control/help.js');
 const access = require('../control/access.js');
 const showCommands = require('../control/commandList.js');
+const database = require('./Database.js');
 module.exports = class Bot{
     constructor(config){
         this.client = new Discord.Client();
         this.client.commands = new Discord.Collection();
         this.cooldowns = new Discord.Collection();
         this.client.music = new Discord.Collection();
-        this.client.redis = require('redis').createClient(config.redis)
-        this.client.blacklist = new Discord.Collection();
-        this.client.on('ready',()=>{
+
+        this.client.on('ready',async ()=>{
             loadCommand(this.client.commands)
-            this.client.redis.get("prefix",(err,rep)=>{
-                this.client.prefixlist = JSON.parse(rep)
-                console.log("Loaded prefix list")
-            })
-            this.client.redis.get("blacklist",(err,rep)=>{
-                this.client.blacklist = JSON.parse(rep)
-                console.log("Loaded blacklist")
-            })
+            
+            this.client.db = new database(process.env.redis);
+            this.client.prefixlist = await this.client.db.get('prefix')
+            this.client.blacklist = await this.client.db.get('blacklist')
             var date = new Date()
             this.client.uptimes = `${date.getUTCHours()<10?"0"+date.getUTCHours():date.getUTCHours()}:${date.getUTCMinutes()<10?"0"+date.getUTCMinutes():date.getUTCMinutes()}:${date.getUTCSeconds()<10?"0"+date.getUTCSeconds():date.getUTCSeconds()} UTC`
         })
         this.client.on('guildCreate',guild=>{
-            try {
-                var channel = guild.channels.find(m => m.name=="bottest");
-                channel.send("");
-            } catch (error) {
-                
-            }
+            var channel = guild.channels.find(m => m.name=="bottest");
+            channel.send("Yumi is appeared! >.<").catch(err=>console.log(err))
         })
         this.client.on('error',error=>{
             console.log(error)
@@ -40,23 +32,18 @@ module.exports = class Bot{
             this.offline= new Date();
             console.log(this.offline)
         })
-        this.client.on('guildMemberAdd',member=>{
+        this.client.on('guildMemberAdd',async member=>{
             var channel = member.guild.channels.find(c=>c.type=="text"&&c.permissionsFor(member.guild.me).has("SEND_MESSAGES"))
             if(channel==undefined) return
-            this.client.redis.get("welcome",(err,reply)=>{
-                let list = JSON.parse(reply.toString());
-                let pos = list.findIndex(m=>m.id==member.guild.id)
-                if(pos==-1) return
-                let num = list[pos].list.length
-                if(num<1){
-                    return channel.send(`Have a great day, ${member} senpai`);
-                }else{
-                    num = Math.floor(Math.random()*num);
-                    let x = list[pos].list[num].replace("@user",`<@${member.id}>`);
-                    channel.send(x);
+            let grlist = await this.client.db.get('welcome')
+            if(grlist!=null){
+                let index = grlist.findIndex(m=>m.id==member.guild.id)
+                if(index!=-1){
+                    let index2 = Math.floor(Math.random()*grlist[index].list.length)
+                    return channel.send(grlist[index].list[index2].replace("@user",`<@${member.id}>`))
                 }
-            });
-
+            }
+            return channel.send(`Hello there, ${member}!`)
         })
         this.client.on('message', message=>{
             let channel = message.channel;
@@ -128,6 +115,9 @@ module.exports = class Bot{
                 }, cdTime);  
 
                 try {
+                    if(command.info.category=="owner"&&message.author.id!=process.env.owner){
+                        return message.channel.send("```You can't use this command!```");
+                    }
                     command.run(message,args);
                 } catch (error) {
                     console.log(error);

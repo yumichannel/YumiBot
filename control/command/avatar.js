@@ -6,7 +6,8 @@ module.exports = {
         description: "show your face (not real face actually)",
         nsfw: false,
         usage: "`prefix`avatar",
-        fusage:""
+        fusage:"",
+        cooldown:5
     },
     run(message,args){
         // Main code

@@ -7,14 +7,18 @@ module.exports={
     info:{
         name:"slap",
         description:"slap someone",
-        usage:"",
-        category:"image"
+        usage:"`prefix`slap <someone>",
+        category:"image",
+        fusage:"`someone`: Yeaz, someone that you mentioned :v"
     },
     async run(message,args){
         const {body:buffer1} = await snekfetch.get(message.author.displayAvatarURL.replace("=2048","=256"));
         const slapper = await Canvas.loadImage(buffer1)
-        const {body:buffer2} = await snekfetch.get(message.mentions.members.first().user.displayAvatarURL.replace("=2048","=256"));
-        const slapped = await Canvas.loadImage(buffer2)
+        if(message.mentions.members.size>0){
+            const {body:buffer2} = await snekfetch.get(message.mentions.members.first().user.displayAvatarURL.replace("=2048","=256"));
+            const slapped = await Canvas.loadImage(buffer2)
+        }
+        
         const bg = await Canvas.loadImage('./image/slap.jpg')
         var canvas = Canvas.createCanvas(400,400)
         var context = canvas.getContext('2d')

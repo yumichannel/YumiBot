@@ -5,7 +5,8 @@ module.exports={
         category:"general",
         cooldown:0,
         description:"ping pong",
-        nsfw:false
+        nsfw:false,
+        cooldown:1
     },
     run(message,args){
         // cmd.exec("ping steamcommunity.com",(error,stdout,stderr)=>{

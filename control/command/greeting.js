@@ -7,7 +7,8 @@ module.exports={
         usage:"`prefix`greeting `add <message>`|`delete <index>`|`list`",
         fusage:"`message`: your custom message, use `@user` for mention new member\n"
         +"`index`: index of message. Check with `list` ",
-        category:"admin"
+        category:"admin",
+        cooldown:5
     },
     run(message,args){
         const option = args.split(" ")[0];

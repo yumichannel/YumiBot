@@ -5,7 +5,8 @@ module.exports = {
         category: "bot",
         description: "get invite link",
         nsfw: false,
-        usage: "`prefix`inviteme"
+        usage: "`prefix`inviteme",
+        cooldown:5
     },
     async run(message,args){
         // Main code

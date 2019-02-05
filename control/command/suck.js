@@ -6,7 +6,8 @@ module.exports={
         description:"SUCK!",
         nsfw:false,
         usage: "`prefix`suck <@somebody>",
-        category:"image"
+        category:"image",
+        cooldown: 5
     },
     async run(message,args){
         let mt = message.mentions.members.first().displayName;

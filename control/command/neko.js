@@ -5,7 +5,8 @@ module.exports={
         name:"neko",
         category:"image",
         usage:"non-lewd: `prefix`neko\nlewd: `prefix`neko lewd",
-        description:"Send a neko girl picture"
+        description:"Send a neko girl picture",
+        cooldown:10
     },
     run(message,args){
         var src = 'https://nekos.life/'

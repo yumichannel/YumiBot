@@ -6,7 +6,8 @@ module.exports = {
         description: "pat pat pat",
         nsfw: false,
         usage: "`prefix`pat <",
-        fusage:""
+        fusage:"",
+        cooldown:3
     },
     run(message,args){
         // Main code

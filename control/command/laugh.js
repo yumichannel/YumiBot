@@ -5,7 +5,8 @@ module.exports = {
         category: "image",
         description: "send a picture",
         nsfw: false,
-        usage: "`prefix`laugh"
+        usage: "`prefix`laugh",
+        cooldown:2
     },
     run(message,args){
         // Main code

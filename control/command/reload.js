@@ -13,6 +13,6 @@ module.exports = {
             message.client.commands.delete(element.info.name);
         });
         load(message.client.commands)
-        message.channel.send("loade commands")
+        message.channel.send("loaded commands")
     }
 }

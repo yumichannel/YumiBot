@@ -1,6 +1,5 @@
 module.exports=function(message,args){
     const config = require('../model/config')
-    const redis = require('redis').createClient(config.redis)
     var mode = args.split(" ")[0]
     let option = args.substring(mode.length+1);
     if(mode=="eval"){
@@ -23,13 +22,34 @@ module.exports=function(message,args){
                         list: []
                     })
                 });
-                redis.set(key,JSON.stringify(list),()=>message.channel.send("Added "+key+" to redis"))
+                message.client.db.set(key,JSON.stringify(list),()=>message.channel.send("Added "+key+" to redis"))
                 break;
             case "list":
-                redis.keys("*",(e,r)=>console.log(r));
+                if(!option[1]){
+                    let temp = []
+                    for(let key in message.client.db.data){
+                        temp.push(key)
+                    }
+                    message.channel.send(temp.join(", "),{code:true})
+                }else{
+                    message.client.db.get(option[1]).then(data=>{
+                        message.channel.send(data,{code:true})
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+                }
+                
                 break;
             case "delete":
+                message.client.db.client;
                 break
+            case "info":
+                break
+            case "f5":
+                // let key = option[1]
+                // message.client.db.get(key).then(data=>{
+                //     var guilds = 
+                // })
             default:
                 redis.get(args,(err,rep)=>{
                     console.log(JSON.parse(rep))

@@ -7,8 +7,8 @@ module.exports={
         description:"play music from youtube",
         usage:"",
         nfsw:false,
-        cooldown: 0,
-        ishide: true
+        ishide: true,
+        cooldown:5
     },
     commands:{
         'status':msg=>{

@@ -26,7 +26,7 @@ module.exports={
                         res+=proc(arr[0],arr[1])+" "
                         x[1]--
                     }
-                    message.channel.send(res)
+                    message.channel.send(`Result: ${res}`)
                 } catch (error) {
                     console.log("rng error:\n"+error)
                 }

@@ -4,7 +4,8 @@ module.exports = {
         category: "bot",
         description: "get invite link to the guild",
         nsfw: false,
-        usage: "`prefix`invite"
+        usage: "`prefix`invite",
+        cooldown:5
     },
     async run(message,args){
         // Main code

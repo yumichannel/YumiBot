@@ -11,7 +11,7 @@ module.exports = {
         fusage: "`prefix`: your server prefix. Check `...prefix`\n"
         +"`command`: your command or `list` to show custom command list\n"
         +"`text`: your custom text, or leave it blank to delete command",
-        cooldown: 0
+        cooldown:5
     },
     run(message,cmd){
         // Main code

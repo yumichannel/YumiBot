@@ -20,12 +20,12 @@ module.exports = {
     run(message,args){
         var uwin =()=>{
             var embed = new Discord.RichEmbed()
-            embed.description(this.answer.win[0])
+            embed.setDescription(this.answer.win[0])
             message.channel.send(embed)
         }
         var ulose =()=>{
             var embed = new Discord.RichEmbed()
-            embed.description(this.answer.lose[0])
+            embed.setDescription(this.answer.lose[0])
             message.channel.send(embed);
         }
         const list = ["scissors","rock","paper"]
@@ -46,7 +46,7 @@ module.exports = {
             
             if(last == list[choice]){
                 var embed = new Discord.RichEmbed()
-                embed.description(this.answer.draw[0])
+                embed.setDescription(this.answer.draw[0])
                 message.channel.send(this.answer.draw[0])
             }else{
                 if(last=="scissors"){

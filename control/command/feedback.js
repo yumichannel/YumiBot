@@ -7,7 +7,8 @@ module.exports = {
         nsfw: false,
         usage: "`prefix`feedback <yourfeedback>",
         fusage:"`yourfeedback`: your feedback :v or anything else",
-        ishide: false
+        ishide: false,
+        cooldown:5
     },
     run(message,args){
         // Main code
