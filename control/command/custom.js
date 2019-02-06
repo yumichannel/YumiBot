@@ -1,6 +1,5 @@
 const redisurl = require('../../model/config.js').redis
 const Discord = require('discord.js');
-const rdc = require('redis').createClient(redisurl);
 module.exports = {
     info: {
         name: "custom",
@@ -13,7 +12,7 @@ module.exports = {
         +"`text`: your custom text, or leave it blank to delete command",
         cooldown:5
     },
-    run(message,cmd){
+    async run(message,cmd){
         // Main code
         var list =[];
         var arg1 = cmd.split(" ")[0];
@@ -25,18 +24,17 @@ module.exports = {
         if(global.array().find(m=>m.info.name===arg1)) return channel.send("```This custom command name is not allow```")
         switch(arg1){
             case "list":
-                rdc.get("custom",function(err,reply){
-                    list = JSON.parse(reply.toString());
+                message.client.db.get('custom').then(list=>{
                     pos = list.findIndex(m=>m.id==guild.id);
-                    let listname ="";
-                    list[pos].list.forEach(m => {listname=listname + ", "+m.name});
-                    listname=listname.substring(2);
-                    if(listname.length<1){
+                    if(pos<0) return console.log("Guild id not found")
+                    let listname =[];
+                    if(list[pos].list.length<1){
                         channel.send("No custom command.");
                     }else{
-                        channel.send("`"+listname+"`");
+                        list[pos].list.forEach(m=>listname.push(m.name))
+                        channel.send("`"+listname.join(", ")+"`");
                     }
-                }); 
+                })
                 return;
             default:
                 if(arg2.length <1){
@@ -49,48 +47,53 @@ module.exports = {
         function set(){
             if(sender.id!=process.env.BOSS_ID){
                 if(!message.member.permissions.has("ADMINISTRATOR")){
-                    return
+                    return console.log("Required Admin permission")
                 }
             }
-            rdc.get("custom",function(err,reply){
-                list = JSON.parse(reply.toString());
+            message.client.db.get('custom').then(list=>{
                 let newc = {
                     name: arg1, 
                     content: arg2
                 }
                 pos = list.findIndex(m=>m.id==guild.id);
+                if(pos<0) return console.log("Guild id not found")
                 let found = list[pos].list.findIndex(m=>m.name==newc.name)
                 if(found==-1){
-                    if(list[pos].list.length==10){
+                    if(list[pos].list.length>9){
                         return channel.send("```Can't add more command!```")
                     }else{
                         list[pos].list.push(newc);
-                        channel.send("`"+arg1+"` is added.");
+                        channel.send("`"+arg1+"` is added.")
                     }
                 }else{
                     list[pos].list.splice(found,1,newc);
-                    channel.send("`"+arg1+"` is modified.");
+                    channel.send("`"+arg1+"` is modified.")
                 }
-                rdc.set("custom",JSON.stringify(list),()=>{});
-            });
+                message.client.db.set('custom',JSON.stringify(list)).then(m=>{
+                    message.client.db.data['custom'] = list
+                    console.log("Updated custom command data")
+                })
+            })
         }
 
         function del(){
             if(sender.id!=process.env.BOSS_ID){
                 if(!message.member.permissions.has("ADMINISTRATOR")){
-                    return
+                    return console.log("Required Admin permission")
                 }
             }
-            rdc.get("custom",function(err,reply){
-                list = JSON.parse(reply.toString());
+            message.client.db.get('custom').then(list=>{
                 pos = list.findIndex(m=>m.id==guild.id)
+                if(pos<0) return console.log("Guild id not found")
                 let found = list[pos].list.findIndex(m=>m.name==arg1);
-                if(found==-1) return;
+                if(found<0) return console.log("custom command not found");
                 list[pos].list.splice(found,1);
-                rdc.set("custom",JSON.stringify(list),()=>{!
-                    channel.send("`"+arg1+"` is deleted.");
-                });
-            });
+                channel.send("`"+arg1+"` is deleted.");
+                message.client.db.set('custom',JSON.stringify(list)).then(m=>{
+                    message.client.db.data['custom'] = list
+                    console.log("Updated custom command data")
+                })
+            })
         }
     }
 }

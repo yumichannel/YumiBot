@@ -3,9 +3,12 @@ module.exports = class Database{
     constructor(redisurl){
         this.data = {}
         this.client = redis.createClient(redisurl)
-        this.loadkeys().then(x=>this.data=x)
+        this.load().then(x=>{
+            this.data = x;
+            console.log("Loaded Database!")
+        })
     }
-    loadkeys(){
+    load(){
         return new Promise((resolve,reject)=>{
             this.client.keys("*",(err,res)=>{
                 let data = {}
@@ -13,8 +16,8 @@ module.exports = class Database{
                     console.log(err)
                     reject(err)
                 }else{
-                    for(let key in res){
-                        data[res[key]] = null
+                    for(let index in res){
+                        this.get(res[index]).then(m=>data[res[index]]=m)
                     }
                     resolve(data)
                 }

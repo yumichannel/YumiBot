@@ -10,19 +10,25 @@ module.exports={
         "*!!!Don't use the prefix that used by other bots*",
         cooldown:1
     },
-    run(message,args){
-        if(!message.member.permissions.has("ADMINISTRATOR")) return
+    async run(message,args){
+        if(message.author.id!=process.env.owner){
+            if(!message.member.permissions.has("ADMINISTRATOR")) return message.channel.send("Admin only!")
+        }
         if(args=="") return message.channel.send("```Not a valid prefix.```")
-        redis.get("prefix",(err,rep)=>{
-            var guilds = JSON.parse(rep);
-            var index =  guilds.findIndex(m=>m.id==message.guild.id);
-            if(guilds[index].list.length==0){
-                guilds[index].list.push(args);
+        var data = await message.client.db.get('prefix')
+        var gindex =  data.findIndex(m=>m.id==message.guild.id);
+        if(gindex==-1){
+            console.log("Guild not found!")
+        }else{
+            if(data[gindex].list.length==0){
+                data[gindex].list.push(args)
             }else{
-                guilds[index].list[0]= args
+                data[gindex].list[0] = args
             }
-            message.client.prefixlist = guilds
-            redis.set("prefix",JSON.stringify(guilds),()=>message.channel.send("Your custom prefix is: `"+args+"`"));
+        }
+        message.client.prefixlist = data
+        message.client.db.set('prefix',JSON.stringify(data)).then(m=>{
+            message.channel.send(`Server prefix changed to \`${args}\``)
         })
     }
 }

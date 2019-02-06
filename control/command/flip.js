@@ -8,7 +8,7 @@ module.exports = {
         cooldown:5
     },
     run(message,args){
-        let text = Math.floor(Math.random()*1)==1?'`heads`':'`tails`';
+        let text = Math.floor(Math.random()*1)==1?'`Heads`':'`Tails`';
         message.channel.send(text)
     }
 }

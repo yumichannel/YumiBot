@@ -14,16 +14,38 @@ module.exports = class Bot{
 
         this.client.on('ready',async ()=>{
             loadCommand(this.client.commands)
-            
+            this.client.user.setActivity(`w/ ${config.prefix}help`,{
+                url: "https://twitch.tv/",
+                type: "STREAMING"
+            })
             this.client.db = new database(process.env.redis);
             this.client.prefixlist = await this.client.db.get('prefix')
             this.client.blacklist = await this.client.db.get('blacklist')
             var date = new Date()
             this.client.uptimes = `${date.getUTCHours()<10?"0"+date.getUTCHours():date.getUTCHours()}:${date.getUTCMinutes()<10?"0"+date.getUTCMinutes():date.getUTCMinutes()}:${date.getUTCSeconds()<10?"0"+date.getUTCSeconds():date.getUTCSeconds()} UTC`
         })
-        this.client.on('guildCreate',guild=>{
-            var channel = guild.channels.find(m => m.name=="bottest");
-            channel.send("Yumi is appeared! >.<").catch(err=>console.log(err))
+        this.client.on('guildCreate',async guild=>{
+            var channel = guild.channels.find(m => m.name=="bottest")
+            if(channel){
+                channel.send("Yumi is appeared! >.<").catch(err=>console.log(err))
+                console.log(2);
+            }
+            var data = this.client.db.data
+            for(let key in data){
+                var guildIndex = data[key].findIndex(m=>m.id==guild.id)
+                console.log(guildIndex);
+                
+                if(guildIndex==-1){
+                    data[key].push({
+                        id: guild.id,
+                        list: []
+                    })
+                    this.client.db.set(key,JSON.stringify(data[key])).then(m=>{
+                        console.log(data[key]);
+                    }).catch(err=>console.log(err))
+                }
+            }
+            this.client.db.data = data
         })
         this.client.on('error',error=>{
             console.log(error)
@@ -58,6 +80,7 @@ module.exports = class Bot{
             let index = this.client.prefixlist.findIndex(m=>m.id==message.guild.id)
             try {
                 var prefix = this.client.prefixlist[index].list[0]
+                if(prefix==undefined) prefix=dprefix
             } catch (error) {
                 var prefix = dprefix
             }
@@ -79,14 +102,12 @@ module.exports = class Bot{
             }
             // Command not found
             if(!this.client.commands.has(commandName)){
-                this.client.redis.get("custom",(err,rep)=>{
-                    var guilds = JSON.parse(rep);
-                    try {
-                        var text = guilds.find(m=>m.id==message.guild.id).list.find(m=>m.name==commandName).content
-                        message.channel.send(text)
-                    } catch (error) {
-                        channel.send("command not found",{code:"javascript"})
-                    }
+                message.client.db.get('custom').then(data=>{
+                    var index = data.findIndex(g=>g.id==message.guild.id)
+                    if(index<0) return console.log("Guild id not found");
+                    var tindex = data[index].list.findIndex(t=>t.name==commandName)
+                    if(tindex<0) return message.channel.send("```Command not found!```")
+                    return message.channel.send(data[index].list[tindex].content)
                 })
                 return
             }

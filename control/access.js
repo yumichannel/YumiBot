@@ -11,9 +11,10 @@ module.exports=function(message,args){
 
     function _redis(option) {
         option = option.split(" ");
+        var key
         switch (option[0]) {
             case "add":
-                let key = option[1];
+                key = option[1];
                 var guilds = message.client.guilds.array();
                 var list = []
                 guilds.forEach(m => {
@@ -46,14 +47,32 @@ module.exports=function(message,args){
             case "info":
                 break
             case "f5":
-                // let key = option[1]
-                // message.client.db.get(key).then(data=>{
-                //     var guilds = 
-                // })
+                key = option[1]
+                if(message.client.db.data[key]==undefined){
+                    return console.log(key+ " not found")
+                }
+                let status = 0
+                message.client.db.get(key).then(data=>{
+                    message.client.guilds.forEach(g=>{
+                        if(data.findIndex(m=>m.id==g.id)<0){
+                            data.push({
+                                id: g.id,
+                                list: []
+                            })
+                            status = 1
+                        }
+                    })
+                    if(status==1){
+                        message.client.db.set(key,JSON.stringify(data)).then(m=>{
+                            console.log(key+" updated!")
+                        })
+                    }else{
+                        console.log(key+" not changed!")
+                    }
+                }).catch(err=>console.log(err))
+                break
             default:
-                redis.get(args,(err,rep)=>{
-                    console.log(JSON.parse(rep))
-                })
+                
                 break;
         }
     }

@@ -14,9 +14,12 @@ module.exports={
     async run(message,args){
         const {body:buffer1} = await snekfetch.get(message.author.displayAvatarURL.replace("=2048","=256"));
         const slapper = await Canvas.loadImage(buffer1)
+        var slapped
         if(message.mentions.members.size>0){
             const {body:buffer2} = await snekfetch.get(message.mentions.members.first().user.displayAvatarURL.replace("=2048","=256"));
-            const slapped = await Canvas.loadImage(buffer2)
+            slapped = await Canvas.loadImage(buffer2)
+        }else{
+            slapped = slapper
         }
         
         const bg = await Canvas.loadImage('./image/slap.jpg')
