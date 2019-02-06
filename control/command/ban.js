@@ -7,7 +7,7 @@ module.exports = {
         nsfw: false,
         usage: "`prefix`ban <@users>",
         fusage:"`@users`: mentioned users\n`reason`: reason why they're banned",
-        ishide: false
+        ishide: true
     },
     run(message,args){
         // Main code

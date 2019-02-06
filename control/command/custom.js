@@ -7,8 +7,7 @@ module.exports = {
         description: "Add custom chat command for your server. 10 is max.",
         nsfw: false,
         usage: "`prefix`custom `command` `text`",
-        fusage: "`prefix`: your server prefix. Check `...prefix`\n"
-        +"`command`: your command or `list` to show custom command list\n"
+        fusage: "`command`: your command or `list` to show custom command list\n"
         +"`text`: your custom text, or leave it blank to delete command",
         cooldown:5
     },

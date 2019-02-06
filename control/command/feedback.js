@@ -6,7 +6,7 @@ module.exports = {
         description: "",
         nsfw: false,
         usage: "`prefix`feedback <yourfeedback>",
-        fusage:"`yourfeedback`: your feedback :v or anything else",
+        fusage:"`yourfeedback`: your feedback :v or anything else but text",
         ishide: false,
         cooldown:5
     },

@@ -11,7 +11,6 @@ module.exports = class Bot{
         this.client.commands = new Discord.Collection();
         this.cooldowns = new Discord.Collection();
         this.client.music = new Discord.Collection();
-
         this.client.on('ready',async ()=>{
             loadCommand(this.client.commands)
             this.client.user.setActivity(`w/ ${config.prefix}help`,{
@@ -70,7 +69,7 @@ module.exports = class Bot{
         this.client.on('message', message=>{
             let channel = message.channel;
             let sender = message.member;
-            let dprefix = "..."
+            let dprefix = config.prefix
             // check the sender
             if(message.author.bot) return;
             if(message.channel.type=="dm") return this.client.channels.get('533306452002209802').send(new Discord.RichEmbed()
@@ -85,7 +84,11 @@ module.exports = class Bot{
                 var prefix = dprefix
             }
             if(message.content==dprefix+"prefix") return message.channel.send("Your server prefix is `"+prefix+"`")
-            if(!message.content.startsWith(prefix)) return;
+            if(!message.content.startsWith(prefix)){
+                if(message.content!=config.prefix+"help"){
+                    return;
+                }
+            }
             let content =  message.content.substr(prefix.length,message.content.length);
             let commandName = content.split(" ")[0];
             let args = content.substr(commandName.length+1,content.length);
