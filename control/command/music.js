@@ -7,7 +7,7 @@ module.exports={
         description:"play music from youtube",
         usage:"",
         nfsw:false,
-        ishide: true,
+        ishide: false,
         cooldown:5
     },
     commands:{
@@ -28,6 +28,14 @@ module.exports={
             if(args[2].startsWith('http')){
                 imusic.queue.push(args[2])
             }
+        },
+        'queue':msg=>{
+            var embed = new Discord.RichEmbed();
+            var list = []
+            var imusic = msg.client.music.get(msg.guild.id)
+            imusic.queue.forEach(song=>{
+                ytdl.getInfo(song,(err,info)=>{console.log(info.player_response.videoDetails.title)})
+            })
         },
         'join': async msg=>{
             if(msg.channel.type!='text') return
@@ -63,7 +71,7 @@ module.exports={
                 imusic.status.isplay= true
                 msg.client.music.set(msg.guild.id,imusic)
                 var dispatcher;
-                play(imusic.queue.shift())
+                play(imusic.queue[0])
                 function play(url){
                     if(url==undefined) return msg.channel.send("Queue is empty.").then(m=>{
                         imusic = m.client.music.get(msg.guild.id)
@@ -146,7 +154,8 @@ module.exports={
                         collector.stop();
                         imusic = msg.client.music.get(msg.guild.id)
                         if(imusic.status.loop == 0){
-                            play(imusic.queue.shift())
+                            imusic.queue.shift()
+                            play(imusic.queue[0])
                         }else{
                             if(imusic.status.loop == 1){
                                 play(url)
@@ -163,7 +172,8 @@ module.exports={
                     dispatcher.on('error',error=>{
                         return msg.channel.send("Error").then(()=>{
                             collector.stop();
-                            play(imusic.queue.shift())
+                            imusic.queue.shift()
+                            play(imusic.queue[0])
                         })
                     })
                 }
@@ -171,12 +181,9 @@ module.exports={
         }
     },
     async run(message,args){
-        return message.channel.send("```This feature is not available```");
+        // return message.channel.send("```This feature is not available```");
         var option = args.split(' ')
-        try {
-            this.commands[option[0]](message)
-        } catch (error) {
-            console.log(error)
-        }
+        if(!this.commands[option[0]]) return message.channel.send('Error.')
+        this.commands[option[0]](message)
     }
 }
