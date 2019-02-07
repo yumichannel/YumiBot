@@ -16,7 +16,7 @@ module.exports={
         +"`muse>>queue` : show the music queue "
         +"`muse>>pause` : Pause the stream"
         +"`muse>>resume` : Resume the stream"
-        +"`muse>>loop none|one|all` : Set no loop/loop one song/loop all song in queue"
+        +"`muse>>loop>>none|one|all` : Set no loop/loop one song/loop all song in queue"
         +"`muse>>random` : Shuffle the queue "
                 
         ,
