@@ -5,10 +5,25 @@ module.exports={
         name:"music",
         category:"music",
         description:"play music from youtube",
-        usage:"",
+        usage:"I.`prefix+music`"
+        +"`!music join` : join a voice channel"
+        +"`!music stop` : stop playing music"
+        +"`!music play` : start the music stream"
+        +"`!music add [someYtLink]` : add music to queue"
+        +"`!music find [keyword]` : find music by keyword"
+        +"`!music join` : join a voice channel"
+        +"`II.`muse>>`"
+        +"`muse>>queue` : show the music queue "
+        +"`muse>>pause` : Pause the stream"
+        +"`muse>>resume` : Resume the stream"
+        +"`muse>>loop none|one|all` : Set no loop/loop one song/loop all song in queue"
+        +"`muse>>random` : Shuffle the queue "
+                
+        ,
+        fusage:"",
         nfsw:false,
         ishide: false,
-        cooldown:5
+        cooldown:0
     },
     commands:{
         'status':msg=>{
@@ -26,16 +41,14 @@ module.exports={
             var imusic = msg.client.music.get(msg.guild.id)
             if(imusic==undefined) return msg.channel.send('```Bot is not in voice```')
             if(args[2].startsWith('http')){
-                imusic.queue.push(args[2])
+                ytdl.getInfo(args[2]).then(info=>{
+                    imusic.queue.push({
+                        name: info.player_response.videoDetails.title,
+                        url: args[2]
+                    })
+                    msg.channel.send(`Added *${info.player_response.videoDetails.title}*`,{code:true})
+                })
             }
-        },
-        'queue':msg=>{
-            var embed = new Discord.RichEmbed();
-            var list = []
-            var imusic = msg.client.music.get(msg.guild.id)
-            imusic.queue.forEach(song=>{
-                ytdl.getInfo(song,(err,info)=>{console.log(info.player_response.videoDetails.title)})
-            })
         },
         'join': async msg=>{
             if(msg.channel.type!='text') return
@@ -80,41 +93,43 @@ module.exports={
                         voiceChannel.leave()
                     })
                     try {
-                        dispatcher = msg.guild.voiceConnection.playStream(ytdl(url,
-                            {
-                                audioonly:true,
-                                highestaudio:true
-                            }
-                        ),
-                            {passes:1})
+                        dispatcher = msg.guild.voiceConnection.playStream(ytdl(url.url,
+                        {
+                            audioonly:true,
+                            highestaudio:true
+                        }),
+                        {passes:1})
+                        msg.channel.send(`Playing: ${url.name}`,{code:true})
                     } catch (error) {
                         console.log(error)
                     }
-                    
-                    var collector = msg.channel.createMessageCollector(m=>m.content.startsWith(".music"))
+                    var collector = msg.channel.createMessageCollector(m=>m.content.startsWith("muse>>"))
                     collector.on('collect',m=>{
-                        var option = m.content.split(' ')
+                        var option = m.content.split('>>')
                         switch(option[1]){
                             case 'queue':
                                 var embed = new Discord.RichEmbed()
                                 var list = ""
                                 embed.setTitle("Music in queue")
                                 for(let item in m.client.music.get(m.guild.id).queue){
-                                    list+=m.client.music.get(m.guild.id).queue[item]+"\n"
+                                    list+=m.client.music.get(m.guild.id).queue[item].name+"\n"
                                 }
                                 embed.setDescription(list)
                                 m.channel.send(embed)
                                 break
                             case 'pause':
-                                m.channel.send("```Music player is pause!```").then(()=>{
+                                m.channel.send("```Music player pause!```").then(()=>{
                                     dispatcher.pause()
                                 })
                                 break
                             case 'resume':
-                                m.channel.send("```Music player is pause!```").then(()=>{
+                                m.channel.send("```Music player resume!```").then(()=>{
                                     dispatcher.resume()
                                 })
                                 break
+                            case 'skip':
+                                dispatcher.end()
+                                break;
                             case 'loop':
                                 var selection=0
                                 var text=""
@@ -183,7 +198,7 @@ module.exports={
     async run(message,args){
         // return message.channel.send("```This feature is not available```");
         var option = args.split(' ')
-        if(!this.commands[option[0]]) return message.channel.send('Error.')
+        if(!this.commands[option[0]]) return
         this.commands[option[0]](message)
     }
 }
