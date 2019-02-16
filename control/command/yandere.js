@@ -23,8 +23,7 @@ module.exports = {
                     var ran = Math.floor(Math.random()*result.length)
                     const imgurl = result[ran].sample_url;
                     em.setImage(imgurl)
-                    em.setDescription("Full resolution")
-                    em.setURL(result[ran].file_url)
+                    em.setDescription(`[Full resolution](${result[ran].file_url})`)
                     message.channel.send(em)
                 })
                 break
@@ -36,8 +35,7 @@ module.exports = {
                     var ran = Math.floor(Math.random()*result.length)
                     const imgurl = result[ran].sample_url;
                     em.setImage(imgurl)
-                    em.setDescription("Full resolution")
-                    em.setURL(result[ran].file_url)
+                    em.setDescription(`[Full resolution](${result[ran].file_url})`)
                     message.channel.send(em)
                 })
                 break
@@ -49,8 +47,7 @@ module.exports = {
                     var ran = Math.floor(Math.random()*result.length)
                     const imgurl = result[ran].sample_url;
                     em.setImage(imgurl)
-                    em.setDescription("Full resolution")
-                    em.setURL(result[ran].file_url)
+                    em.setDescription(`[Full resolution](${result[ran].file_url})`)
                     message.channel.send(em)
                 })
                 break
@@ -62,8 +59,7 @@ module.exports = {
                     var ran = Math.floor(Math.random()*result.length)
                     const imgurl = result[ran].sample_url;
                     em.setImage(imgurl)
-                    em.setDescription("Full resolution")
-                    em.setURL(result[ran].file_url)
+                    em.setDescription(`[Full resolution](${result[ran].file_url})`)
                     message.channel.send(em)
                 })
                 break
@@ -75,8 +71,7 @@ module.exports = {
                     var ran = Math.floor(Math.random()*result.length)
                     const imgurl = result[ran].sample_url;
                     em.setImage(imgurl)
-                    em.setDescription("Full resolution")
-                    em.setURL(result[ran].file_url)
+                    em.setDescription(`[Full resolution](${result[ran].file_url})`)
                     message.channel.send(em)
                 })
                 break
@@ -89,8 +84,7 @@ module.exports = {
                     var ran = Math.floor(Math.random()*result.length)
                     const imgurl = result[ran].sample_url;
                     em.setImage(imgurl)
-                    em.setDescription("Full resolution")
-                    em.setURL(result[ran].file_url)
+                    em.setDescription(`[Full resolution](${result[ran].file_url})`)
                     message.channel.send(em)
                 })
             }
