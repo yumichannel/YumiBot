@@ -22,12 +22,10 @@ module.exports = {
                     if(result.length<1) return
                     var ran = Math.floor(Math.random()*result.length)
                     const imgurl = result[ran].sample_url;
-                    snek.get(imgurl).then(res=>{
-                        em.setImage(res.body)
-                        em.setDescription("Full resolution")
-                        em.setURL(result[ran].file_url)
-                        message.channel.send(em)
-                    })
+                    em.setImage(imgurl)
+                    em.setDescription("Full resolution")
+                    em.setURL(result[ran].file_url)
+                    message.channel.send(em)
                 })
                 break
             }
@@ -37,12 +35,10 @@ module.exports = {
                     if(result.length<1) return
                     var ran = Math.floor(Math.random()*result.length)
                     const imgurl = result[ran].sample_url;
-                    snek.get(imgurl).then(res=>{
-                        em.setImage(res.body)
-                        em.setDescription("Full resolution")
-                        em.setURL(result[ran].file_url)
-                        message.channel.send(em)
-                    })
+                    em.setImage(imgurl)
+                    em.setDescription("Full resolution")
+                    em.setURL(result[ran].file_url)
+                    message.channel.send(em)
                 })
                 break
             }
@@ -52,12 +48,10 @@ module.exports = {
                     if(result.length<1) return
                     var ran = Math.floor(Math.random()*result.length)
                     const imgurl = result[ran].sample_url;
-                    snek.get(imgurl).then(res=>{
-                        em.setImage(res.body)
-                        em.setDescription("Full resolution")
-                        em.setURL(result[ran].file_url)
-                        message.channel.send(em)
-                    })
+                    em.setImage(imgurl)
+                    em.setDescription("Full resolution")
+                    em.setURL(result[ran].file_url)
+                    message.channel.send(em)
                 })
                 break
             }
@@ -67,12 +61,10 @@ module.exports = {
                     if(result.length<1) return
                     var ran = Math.floor(Math.random()*result.length)
                     const imgurl = result[ran].sample_url;
-                    snek.get(imgurl).then(res=>{
-                        em.setImage(res.body)
-                        em.setDescription("Full resolution")
-                        em.setURL(result[ran].file_url)
-                        message.channel.send(em)
-                    })
+                    em.setImage(imgurl)
+                    em.setDescription("Full resolution")
+                    em.setURL(result[ran].file_url)
+                    message.channel.send(em)
                 })
                 break
             }
@@ -82,12 +74,10 @@ module.exports = {
                     if(result.length<1) return
                     var ran = Math.floor(Math.random()*result.length)
                     const imgurl = result[ran].sample_url;
-                    snek.get(imgurl).then(res=>{
-                        em.setImage(res.body)
-                        em.setDescription("Full resolution")
-                        em.setURL(result[ran].file_url)
-                        message.channel.send(em)
-                    })
+                    em.setImage(imgurl)
+                    em.setDescription("Full resolution")
+                    em.setURL(result[ran].file_url)
+                    message.channel.send(em)
                 })
                 break
             }
@@ -98,12 +88,10 @@ module.exports = {
                     if(result.length<1) return
                     var ran = Math.floor(Math.random()*result.length)
                     const imgurl = result[ran].sample_url;
-                    snek.get(imgurl).then(res=>{
-                        em.setImage(res.body)
-                        em.setDescription("Full resolution")
-                        em.setURL(result[ran].file_url)
-                        message.channel.send(em)
-                    })
+                    em.setImage(imgurl)
+                    em.setDescription("Full resolution")
+                    em.setURL(result[ran].file_url)
+                    message.channel.send(em)
                 })
             }
         }
