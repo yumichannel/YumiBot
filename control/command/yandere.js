@@ -6,23 +6,27 @@ module.exports = {
         category: "image",
         description: "Find image on yande.re",
         nsfw: false,
-        usage: "",
-        fusage:"",
+        usage: "`prefix`yandere `option`",
+        fusage:"`option`: `daily`,`weekly`,`monthly`,`yearly` or nothing for random or some keywords",
         ishide: false,
         cooldown: 1
     },
     run(message,args){
         // Main code
         const src = "https://yande.re/";
+        var em = new Discord.RichEmbed();
         switch(args){
             case "daily":{
                 snek.get(src+"post/popular_recent.json").then(res=>{
                     var result = res.body
                     if(result.length<1) return
                     var ran = Math.floor(Math.random()*result.length)
-                    const imgurl = result[ran].file_url;
+                    const imgurl = result[ran].sample_url;
                     snek.get(imgurl).then(res=>{
-                        message.channel.send(new Discord.Attachment(res.body))
+                        em.setImage(res.body)
+                        em.setDescription("Full resolution")
+                        em.setURL(result[ran].file_url)
+                        message.channel.send(em)
                     })
                 })
                 break
@@ -32,9 +36,12 @@ module.exports = {
                     var result = res.body
                     if(result.length<1) return
                     var ran = Math.floor(Math.random()*result.length)
-                    const imgurl = result[ran].file_url;
+                    const imgurl = result[ran].sample_url;
                     snek.get(imgurl).then(res=>{
-                        message.channel.send(new Discord.Attachment(res.body))
+                        em.setImage(res.body)
+                        em.setDescription("Full resolution")
+                        em.setURL(result[ran].file_url)
+                        message.channel.send(em)
                     })
                 })
                 break
@@ -44,9 +51,12 @@ module.exports = {
                     var result = res.body
                     if(result.length<1) return
                     var ran = Math.floor(Math.random()*result.length)
-                    const imgurl = result[ran].file_url;
+                    const imgurl = result[ran].sample_url;
                     snek.get(imgurl).then(res=>{
-                        message.channel.send(new Discord.Attachment(res.body))
+                        em.setImage(res.body)
+                        em.setDescription("Full resolution")
+                        em.setURL(result[ran].file_url)
+                        message.channel.send(em)
                     })
                 })
                 break
@@ -56,9 +66,12 @@ module.exports = {
                     var result = res.body
                     if(result.length<1) return
                     var ran = Math.floor(Math.random()*result.length)
-                    const imgurl = result[ran].file_url;
+                    const imgurl = result[ran].sample_url;
                     snek.get(imgurl).then(res=>{
-                        message.channel.send(new Discord.Attachment(res.body))
+                        em.setImage(res.body)
+                        em.setDescription("Full resolution")
+                        em.setURL(result[ran].file_url)
+                        message.channel.send(em)
                     })
                 })
                 break
@@ -68,9 +81,12 @@ module.exports = {
                     var result = res.body
                     if(result.length<1) return
                     var ran = Math.floor(Math.random()*result.length)
-                    const imgurl = result[ran].file_url;
+                    const imgurl = result[ran].sample_url;
                     snek.get(imgurl).then(res=>{
-                        message.channel.send(new Discord.Attachment(res.body))
+                        em.setImage(res.body)
+                        em.setDescription("Full resolution")
+                        em.setURL(result[ran].file_url)
+                        message.channel.send(em)
                     })
                 })
                 break
@@ -81,9 +97,12 @@ module.exports = {
                     var result = res.body
                     if(result.length<1) return
                     var ran = Math.floor(Math.random()*result.length)
-                    const imgurl = result[ran].file_url;
+                    const imgurl = result[ran].sample_url;
                     snek.get(imgurl).then(res=>{
-                        message.channel.send(new Discord.Attachment(res.body))
+                        em.setImage(res.body)
+                        em.setDescription("Full resolution")
+                        em.setURL(result[ran].file_url)
+                        message.channel.send(em)
                     })
                 })
             }

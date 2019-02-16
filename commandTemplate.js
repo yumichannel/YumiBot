@@ -6,7 +6,8 @@ module.exports = {
         nsfw: false,
         usage: "",
         fusage:"",
-        ishide: false
+        ishide: false,
+        cooldown: 1
     },
     run(message,args){
         // Main code
