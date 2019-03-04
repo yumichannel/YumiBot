@@ -2,10 +2,10 @@ const snek = require('snekfetch')
 const Discord = require('discord.js')
 module.exports = {
     info: {
-        name: "yandere",
+        name: "yan",
         category: "image",
         description: "Find image on yande.re",
-        nsfw: false,
+        nsfw: true,
         usage: "`prefix`yandere `option`",
         fusage:"`option`: `daily`,`weekly`,`monthly`,`yearly` or nothing for random or some keywords",
         ishide: false,
