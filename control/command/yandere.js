@@ -77,7 +77,7 @@ module.exports = {
                 break
             }
             default:{
-                let tag = args
+                let tag = args.replace(" ","_")
                 snek.get(src+"post.json?tags="+encodeURI(tag)).then(res=>{
                     var result = res.body
                     if(result.length<1) return
