@@ -6,7 +6,7 @@ module.exports = {
         category: "image",
         description: "Find image on yande.re",
         nsfw: true,
-        usage: "`prefix`yandere `option`",
+        usage: "`prefix`yan `option`",
         fusage:"`option`: `daily`,`weekly`,`monthly`,`yearly` or nothing for random or some keywords",
         ishide: false,
         cooldown: 1

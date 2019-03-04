@@ -142,6 +142,7 @@ module.exports = class Bot{
                     if(command.info.category=="owner"&&message.author.id!=process.env.owner){
                         return message.channel.send("```You can't use this command!```");
                     }
+                    if(command.info.nsfw && !message.channel.nsfw) return message.channel.send("( ͡° ͜ʖ ͡°) Please go to `NSFW` place");
                     command.run(message,args);
                 } catch (error) {
                     console.log(error);
