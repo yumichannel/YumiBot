@@ -1,4 +1,3 @@
-const config = require('./model/config')
 module.exports={
     info:{
         name: "prefix",
@@ -26,8 +25,13 @@ module.exports={
             }
         }
         message.client.prefixlist = data
-        message.client.db.set('prefix',JSON.stringify(data)).then(m=>{
-            message.channel.send(`Server prefix changed to \`${args}\``)
+        message.client.db.set('prefix',JSON.stringify(data)).then(status=>{
+            if(status==1){
+                message.channel.send(`Server prefix changed to \`${args}\``)
+            }else{
+                message.channel.send('```Can not change prefix.```')
+            }
+            
         })
     }
 }

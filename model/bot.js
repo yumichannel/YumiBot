@@ -18,8 +18,10 @@ module.exports = class Bot{
                 type: "STREAMING"
             })
             this.client.db = new database("model/Database.json");
-            this.client.prefixlist = await this.client.db.get('prefix')
-            this.client.blacklist = await this.client.db.get('blacklist')
+            this.client.db.load().then(async status=>{
+                this.client.prefixlist = await this.client.db.get('prefix')
+                this.client.blacklist = await this.client.db.get('blacklist')
+            })
             var date = new Date()
             this.client.uptimes = `${date.getUTCHours()<10?"0"+date.getUTCHours():date.getUTCHours()}:${date.getUTCMinutes()<10?"0"+date.getUTCMinutes():date.getUTCMinutes()}:${date.getUTCSeconds()<10?"0"+date.getUTCSeconds():date.getUTCSeconds()} UTC`
         })

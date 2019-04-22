@@ -3,13 +3,13 @@ module.exports = class Database{
     constructor(redisurl){
         this.data = {}
         this.url = redisurl
-        this.load().then(status=>{
-            if(status==1){
-                console.log("Loaded Database!")
-            }else{
-                console.log("Failed Loading Database!")
-            }
-        })
+        // this.load().then(status=>{
+        //     if(status==1){
+        //         console.log("Loaded Database!")
+        //     }else{
+        //         console.log("Failed Loading Database!")
+        //     }
+        // })
     }
 
     /**
@@ -36,9 +36,9 @@ module.exports = class Database{
         return new Promise((resolve,reject)=>{
             fs.writeFile(this.url,JSON.stringify(this.data,),'utf8',err=>{
                 if(err){
-                    resolve(1)
-                }else{
                     resolve(0)
+                }else{
+                    resolve(1)
                 }
             })
         })
@@ -53,7 +53,7 @@ module.exports = class Database{
             if(key in this.data && this.data[key]!=null){
                 resolve(this.data[key])
             }else{
-                reject("No data for this key")
+                reject("No data for "+key)
             }
         })
     }
@@ -66,7 +66,8 @@ module.exports = class Database{
      */
     set(key,value){
         return new Promise((resolve,reject)=>{
-            
+            this.data[key] = JSON.parse(value)
+            this.save().then(status=>resolve(status))
         })
     }
 
