@@ -22,7 +22,6 @@
     "gifencoder": "^1.1.0",
     "google-translate-api": "^2.3.0",
     "node-opus": "^0.3.1",
-    "redis": "^2.8.0",
     "snekfetch": "^4.0.4",
     "ytdl-core": "^0.28.3"
   }

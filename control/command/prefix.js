@@ -1,5 +1,4 @@
-const config = require('../../model/config')
-const redis = require('redis').createClient(config.redis)
+const config = require('./model/config')
 module.exports={
     info:{
         name: "prefix",
