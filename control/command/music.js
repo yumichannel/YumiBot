@@ -86,6 +86,7 @@ module.exports={
                 var dispatcher;
                 play(imusic.queue[0])
                 function play(url){
+                    console.log(url);
                     if(url==undefined) return msg.channel.send("Queue is empty.").then(m=>{
                         imusic = m.client.music.get(msg.guild.id)
                         imusic.status.isplay=false

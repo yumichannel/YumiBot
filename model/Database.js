@@ -1,23 +1,26 @@
 const redis = require('redis')
+const fs = require('fs')
 module.exports = class Database{
     constructor(redisurl){
         this.data = {}
-        this.client = redis.createClient(redisurl)
         this.load().then(x=>{
             this.data = x;
             console.log("Loaded Database!")
+        }).catch(e=>{
+            console.log("Failed Loading Database!")
         })
     }
     load(){
         return new Promise((resolve,reject)=>{
-            this.client.keys("*",(err,res)=>{
+            fs.readFile(this.url,'utf8',(err,str)=>{
                 let data = {}
                 if(err){
                     console.log(err)
                     reject(err)
                 }else{
-                    for(let index in res){
-                        this.get(res[index]).then(m=>data[res[index]]=m)
+                    data = JSON.parse(str)
+                    for(let index in data){
+                        this.get(data[index]).then(m=>data[res[index]]=m)
                     }
                     resolve(data)
                 }
@@ -29,14 +32,8 @@ module.exports = class Database{
             if(key in this.data && this.data[key]!=null){
                 resolve(this.data[key])
             }else{
-                this.client.get(key,(err,res)=>{
-                    if(err){
-                        console.log(err)
-                        reject(err)
-                    }else{
-                        this.data[key] = JSON.parse(res)
-                        resolve(JSON.parse(res))
-                    }
+                this.load().then(data=>{
+
                 })
             }
         })
