@@ -23,7 +23,7 @@ module.exports=function(message,args){
                         list: []
                     })
                 });
-                message.client.db.set(key,JSON.stringify(list),()=>message.channel.send("Added "+key+" to redis"))
+                message.client.db.set(key,JSON.stringify(list)).then(message.channel.send("Added "+key+" to database"))
                 break;
             case "list":
                 if(!option[1]){
@@ -42,7 +42,6 @@ module.exports=function(message,args){
                 
                 break;
             case "delete":
-                message.client.db.client;
                 break
             case "info":
                 break

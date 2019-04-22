@@ -17,7 +17,7 @@ module.exports = class Bot{
                 url: "https://twitch.tv/",
                 type: "STREAMING"
             })
-            this.client.db = new database(process.env.redis);
+            this.client.db = new database("model/Database.json");
             this.client.prefixlist = await this.client.db.get('prefix')
             this.client.blacklist = await this.client.db.get('blacklist')
             var date = new Date()

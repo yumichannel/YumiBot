@@ -1,63 +1,84 @@
-const redis = require('redis')
 const fs = require('fs')
 module.exports = class Database{
     constructor(redisurl){
         this.data = {}
-        this.load().then(x=>{
-            this.data = x;
-            console.log("Loaded Database!")
-        }).catch(e=>{
-            console.log("Failed Loading Database!")
+        this.url = redisurl
+        this.load().then(status=>{
+            if(status==1){
+                console.log("Loaded Database!")
+            }else{
+                console.log("Failed Loading Database!")
+            }
         })
     }
+
+    /**
+     * Load database
+     */
     load(){
         return new Promise((resolve,reject)=>{
             fs.readFile(this.url,'utf8',(err,str)=>{
-                let data = {}
                 if(err){
                     console.log(err)
-                    reject(err)
+                    resolve(0)
                 }else{
-                    data = JSON.parse(str)
-                    for(let index in data){
-                        this.get(data[index]).then(m=>data[res[index]]=m)
-                    }
-                    resolve(data)
+                    this.data = JSON.parse(str)
+                    resolve(1)
                 }
             })
         })
     }
+
+    /**
+     * Save database
+     */
+    save(){
+        return new Promise((resolve,reject)=>{
+            fs.writeFile(this.url,JSON.stringify(this.data,),'utf8',err=>{
+                if(err){
+                    resolve(1)
+                }else{
+                    resolve(0)
+                }
+            })
+        })
+    }
+
+    /**
+     * Get data from this key
+     * @param {string} key 
+     */
     get(key){
         return new Promise((resolve,reject)=>{
             if(key in this.data && this.data[key]!=null){
                 resolve(this.data[key])
             }else{
-                this.load().then(data=>{
-
-                })
+                reject("No data for this key")
             }
         })
     }
+
+    /**
+     * 
+     * Add new key to database
+     * @param {string} key 
+     * @param {string} value 
+     */
     set(key,value){
         return new Promise((resolve,reject)=>{
-            this.client.set(key,value,(err)=>{
-                if(err){
-                    console.log(err)
-                    reject(err)
-                }
-                resolve(value)
-            })
+            
         })
     }
+
+    /**
+     * Delete key from database
+     * @param {string} key 
+     */
     del(key){
         return new Promise((resolve,reject)=>{
-            this.client.del(key,(err)=>{
-                if(err){
-                    console.log(err)
-                    reject(err)
-                }
-                this.data[key] = undefined
-                resolve();
+            this.data[key] = undefined
+            this.save().then(status=>{
+                resolve(status)
             })
         })
     }
