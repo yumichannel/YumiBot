@@ -8,7 +8,7 @@ module.exports = {
         usage: "`prefix`laugh",
         cooldown:2
     },
-    run(message,args){
+    run(message=Discord.Message,args){
         // Main code
         let em = new Discord.RichEmbed();
         em.setImage('https://i.imgur.com/ojjWsjK.jpg');

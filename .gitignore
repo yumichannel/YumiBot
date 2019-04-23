@@ -8,3 +8,4 @@ control/command/reload.js
 test.js
 test.html
 image.png
+model/Database.json

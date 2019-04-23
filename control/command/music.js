@@ -5,7 +5,7 @@ module.exports={
         name:"music",
         category:"music",
         description:"play music from youtube",
-        usage:"I.`prefix+music`"
+        usage:"I.`prefix+music`\n"
         +"`!music join` : join a voice channel"
         +"`!music stop` : stop playing music"
         +"`!music play` : start the music stream"
@@ -22,11 +22,12 @@ module.exports={
         ,
         fusage:"",
         nfsw:false,
-        ishide: false,
+        ishide: true,
         cooldown:0
     },
     commands:{
-        'status':msg=>{
+        
+        'status':function(msg=Discord.Message){
             var embed = new Discord.RichEmbed()
             var status = msg.client.music.get(msg.guild.id).status
             embed.setTitle("Music player status")
@@ -36,7 +37,7 @@ module.exports={
             embed.addField("LOOP",status.loop==0?"No loop":(status.loop==1?"Loop one":"Loop all"))
             msg.channel.send(embed)
         },
-        'add':msg=>{
+        'add':(msg=Discord.Message)=>{
             var args = msg.content.split(' ');
             var imusic = msg.client.music.get(msg.guild.id)
             if(imusic==undefined) return msg.channel.send('```Bot is not in voice```')
@@ -50,7 +51,7 @@ module.exports={
                 })
             }
         },
-        'join': async msg=>{
+        'join': async (msg=Discord.Message)=>{
             if(msg.channel.type!='text') return
             var voiceChannel = msg.member.voiceChannel
             var imusic = msg.client.music.get(msg.guild.id)
@@ -68,13 +69,13 @@ module.exports={
                 
             }
         },
-        'stop': msg=>{
+        'stop': (msg=Discord.Message)=>{
             msg.member.voiceChannel.leave()
             var imusic = msg.client.music.get(msg.guild.id)
             imusic.status.isplay = false
             imusic.status.queue = []
         },
-        'play': msg=>{
+        'play': (msg=Discord.Message)=>{
             var voiceChannel = msg.member.voiceChannel
             var imusic = msg.client.music.get(msg.guild.id)
             if(!voiceChannel) return msg.channel.send("join voice first")
@@ -105,6 +106,7 @@ module.exports={
                         console.log(error)
                     }
                     var collector = msg.channel.createMessageCollector(m=>m.content.startsWith("muse>>"))
+                    
                     collector.on('collect',m=>{
                         var option = m.content.split('>>')
                         switch(option[1]){
