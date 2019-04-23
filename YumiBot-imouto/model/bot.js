@@ -1,4 +1,4 @@
-﻿const Discord = require('discord.js');
+const Discord = require('discord.js');
 const fs = require('fs');
 const loadCommand = require('../control/loadCommand.js');
 const help = require('../control/help.js');
@@ -56,7 +56,7 @@ module.exports = class Bot{
             console.log(this.offline)
         })
         this.client.on('guildMemberAdd',async member=>{
-            var channel = member.guild.channels.find(c=>c.name=="everything")
+            var channel = member.guild.channels.find(c=>c.type=="text"&&c.permissionsFor(member.guild.me).has("SEND_MESSAGES"))
             if(channel==undefined) return
             let grlist = await this.client.db.get('welcome')
             if(grlist!=null){
