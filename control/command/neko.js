@@ -17,7 +17,7 @@ module.exports={
             tag='lewd'
         }
         if(lewd && message.channel.nsfw===false){
-            message.channel.send('( ͡° ͜ʖ ͡°) Please go to `NSFW` place')
+            message.client.lewd(message)
             return
         }else{
             snekfetch.get(src+tag).then(m=>{

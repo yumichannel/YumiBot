@@ -7,14 +7,22 @@ module.exports = {
     info: {
         name: "trigger",
         category: "image",
-        description: "make you triggered",
+        description: "make you triggered,make yourfriend triggered",
         nsfw: false,
-        usage: "`prefix`trigger",
+        usage: "`prefix`trigger `<mention_user>`",
         cooldown: 10
     },
-    async run(message,args){
+    async run(message=new Discord.Message,args=new String){
         // Main code
-        const {body:buffer} = await snekfetch.get(message.author.displayAvatarURL.replace("=2048","=256"));
+        if(message.mentions.members.size==0){
+            var {body:buffer} = await snekfetch.get(message.author.displayAvatarURL.replace("=2048","=256"));
+        }else{
+            if(message.mentions.members.size>1){
+                return message.channel.send(`you can't trigger more than one person!`,{code:true})
+            }else{
+                var {body:buffer} = await snekfetch.get(message.mentions.users.first().displayAvatarURL.replace("=2048","=256"));
+            }
+        }
         const avatar = await Canvas.loadImage(buffer);
         const trigger =  await Canvas.loadImage("./image/triggered.png")
         const canvas = Canvas.createCanvas(300,300);

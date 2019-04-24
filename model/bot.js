@@ -11,6 +11,9 @@ module.exports = class Bot{
         this.client.commands = new Discord.Collection();
         this.cooldowns = new Discord.Collection();
         this.client.music = new Discord.Collection();
+        this.client.lewd = (msg=new Discord.Message)=>{
+            msg.channel.send(new Discord.RichEmbed().setTitle("NSFW").setImage('https://media1.tenor.com/images/b1b3e852ed8be4622f9812550beb8d88/tenor.gif'))
+        }
         this.client.on('ready',async ()=>{
             loadCommand(this.client.commands)
             this.client.user.setActivity(`w/ ${config.prefix}help`,{
@@ -19,7 +22,7 @@ module.exports = class Bot{
             })
             this.client.db = new database("model/Database.json");
             this.client.db.load().then(async status=>{
-                this.client.prefixlist = await this.client.db.get('prefix')
+                this.client.prefix = await this.client.db.get('prefix')
                 this.client.blacklist = await this.client.db.get('blacklist')
                 this.client.errmsg = await this.client.db.get('errmsg')
                 this.client.welchannel = await this.client.db.get('welchannel')
@@ -30,13 +33,10 @@ module.exports = class Bot{
             var channel = guild.channels.find(m => m.name=="bottest")
             if(channel){
                 channel.send("Yumi is appeared! >.<").catch(err=>console.log(err))
-                console.log(2);
             }
             var data = this.client.db.data
             for(let key in data){
-                var guildIndex = data[key].findIndex(m=>m.id==guild.id)
-                console.log(guildIndex);
-                
+                var guildIndex = data[key].findIndex(m=>m.id==guild.id)                
                 if(guildIndex==-1){
                     data[key].push({
                         id: guild.id,
@@ -89,9 +89,9 @@ module.exports = class Bot{
                 return;
             }
             // check prefix
-            let index = this.client.prefixlist.findIndex(m=>m.id==message.guild.id)
+            let index = this.client.prefix.findIndex(m=>m.id==message.guild.id)
             try {
-                var prefix = this.client.prefixlist[index].list[0]
+                var prefix = this.client.prefix[index].list[0]
                 if(prefix==undefined) prefix=dprefix
             } catch (error) {
                 var prefix = dprefix
@@ -157,7 +157,7 @@ module.exports = class Bot{
                     if(command.info.category=="owner" && message.author.id!=process.env.owner){
                         return message.channel.send("```You can't use this command!```");
                     }
-                    if(command.info.nsfw && !message.channel.nsfw) return message.channel.send("( ͡° ͜ʖ ͡°) Please go to `NSFW` place");
+                    if(command.info.nsfw && !message.channel.nsfw) return message.client.lewd(message);
                     if(command.info.ishide == false || command.info.ishide==undefined) command.run(message,args);
                 } catch (error) {
                     console.log(error);

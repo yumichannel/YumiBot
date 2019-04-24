@@ -24,7 +24,7 @@ module.exports={
                 data[gindex].list[0] = args
             }
         }
-        message.client.prefixlist = data
+        message.client.prefix = data
         message.client.db.set('prefix',JSON.stringify(data)).then(status=>{
             if(status==1){
                 message.channel.send(`Server prefix changed to \`${args}\``)

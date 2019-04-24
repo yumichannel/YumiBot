@@ -12,12 +12,18 @@ module.exports={
         fusage:"`someone`: Yeaz, someone that you mentioned :v"
     },
     async run(message,args){
+        var text = ""
         const {body:buffer1} = await snekfetch.get(message.author.displayAvatarURL.replace("=2048","=256"));
         const slapper = await Canvas.loadImage(buffer1)
         var slapped
         if(message.mentions.members.size>0){
-            const {body:buffer2} = await snekfetch.get(message.mentions.members.first().user.displayAvatarURL.replace("=2048","=256"));
-            slapped = await Canvas.loadImage(buffer2)
+            if(message.mentions.members.get(message.client.user.id)==undefined){
+                const {body:buffer2} = await snekfetch.get(message.mentions.members.first().user.displayAvatarURL.replace("=2048","=256"));
+                slapped = await Canvas.loadImage(buffer2)
+            }else{
+                text = "Không trượt phát lào"
+                slapped = slapper
+            }
         }else{
             slapped = slapper
         }
@@ -26,6 +32,17 @@ module.exports={
         var canvas = Canvas.createCanvas(400,400)
         var context = canvas.getContext('2d')
         context.drawImage(bg, 0, 0, 400, 400);
+
+        context.save();
+        context.fillStyle='white';
+        context.font='40px arial';
+        context.shadowColor='black';
+        context.shadowBlur=10;
+        var range = context.measureText(text)
+        
+        context.fillText(text, (400 - range.width)/2, 50);
+        context.restore();
+
         context.drawImage(slapped, 235, 165, 125, 125);
         
         var buff = canvas.toBuffer()

@@ -9,7 +9,7 @@ module.exports = {
         fusage:"",
         cooldown:3
     },
-    run(message,args){
+    run(message=new Discord.Message,args=new String){
         // Main code
         const list = [
             "https://i.imgur.com/JHdnsWA.gif",
@@ -21,9 +21,9 @@ module.exports = {
         const patted = message.mentions.members.first()
         var text;
         if(args==""){
-            text = `${pater} try patting yourself huh???`
+            text = `${pater.displayName} try patting yourself huh???`
         } else{
-            text = (pater.id==patted.id)?`Yumi-chan pat pat pat ${pater}`:`${pater} pat pat ${patted}`
+            text = (pater.id==patted.id)?`${message.guild.members.get(message.client.user.id).displayName} pat pat pat ${pater.displayName}`:`${pater.displayName} pat pat ${patted.displayName}`
         }
         var embed = new Discord.RichEmbed()
         .setDescription(text)

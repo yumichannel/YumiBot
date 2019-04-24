@@ -8,7 +8,9 @@ module.exports={
         category:"image",
         nsfw:false,
         description:"show your profile",
-        usage:"`prefix`watashi"
+        usage:"`prefix`watashi",
+        ishide: true,
+        cooldown: 2
     },
     async run(message,args){
         return message.channel.send("This feature is coming soon",{code:true})
