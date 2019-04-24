@@ -119,10 +119,10 @@ module.exports = class Bot{
 
                     var tindex = data[index].list.findIndex(t=>t.name==commandName)
                     if(tindex<0){
-                        eindex = message.client.errmsg.findIndex(obj=>obj.id==message.guild.id)
+                        let eindex = message.client.errmsg.findIndex(obj=>obj.id==message.guild.id)
                         let errmsg = message.client.errmsg[eindex].list
                         let ran = Math.floor(Math.random()*errmsg.length)
-                        msg = message.client.errmsg[eindex].list[ran].replace("@user",`**${message.member.nickname}**`)
+                        let msg = message.client.errmsg[eindex].list[ran].replace("@user",`**${message.member.nickname}**`)
                         return message.channel.send()
                     }
                     return message.channel.send(data[index].list[tindex].content)
