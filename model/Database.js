@@ -53,7 +53,7 @@ module.exports = class Database{
             if(key in this.data && this.data[key]!=null){
                 resolve(this.data[key])
             }else{
-                reject("No data for "+key)
+                resolve([])
             }
         })
     }

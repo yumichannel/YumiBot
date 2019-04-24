@@ -5,20 +5,19 @@ module.exports={
         name:"music",
         category:"music",
         description:"play music from youtube",
-        usage:"I.`prefix+music`\n"
-        +"`!music join` : join a voice channel"
-        +"`!music stop` : stop playing music"
-        +"`!music play` : start the music stream"
-        +"`!music add [someYtLink]` : add music to queue"
-        +"`!music find [keyword]` : find music by keyword"
-        +"`!music join` : join a voice channel"
-        +"`II.`muse>>`"
-        +"`muse>>queue` : show the music queue "
-        +"`muse>>pause` : Pause the stream"
-        +"`muse>>resume` : Resume the stream"
-        +"`muse>>loop>>none|one|all` : Set no loop/loop one song/loop all song in queue"
-        +"`muse>>random` : Shuffle the queue "
-                
+        usage:"**I.`prefix+music`**\n"
+        +"`!music join` : join a voice channel\n"
+        +"`!music stop` : stop playing music\n"
+        +"`!music play` : start the music stream\n"
+        +"`!music add [someYtLink]` : add music to queue\n"
+        +"`!music find [keyword]` : find music by keyword\n"
+        +"`!music join` : join a voice channel\n"
+        +"**II.`muse>>`**\n"
+        +"`muse>>queue` : show the music queue\n "
+        +"`muse>>pause` : Pause the stream\n"
+        +"`muse>>resume` : Resume the stream\n"
+        +"`muse>>loop>>none|one|all` : Set no loop/loop one song/loop all song in queue\n"
+        +"`muse>>random` : Shuffle the queue \n"  
         ,
         fusage:"",
         nfsw:false,
@@ -199,7 +198,7 @@ module.exports={
         }
     },
     async run(message,args){
-        // return message.channel.send("```This feature is not available```");
+        return message.channel.send("```This feature is not available```");
         var option = args.split(' ')
         if(!this.commands[option[0]]) return
         this.commands[option[0]](message)

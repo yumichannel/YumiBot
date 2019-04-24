@@ -14,16 +14,17 @@ module.exports = class Bot{
         this.client.on('ready',async ()=>{
             loadCommand(this.client.commands)
             this.client.user.setActivity(`w/ ${config.prefix}help`,{
-                url: "https://twitch.tv/",
+                url: "https://www.twitch.tv/yumi_channel",
                 type: "STREAMING"
             })
             this.client.db = new database("model/Database.json");
             this.client.db.load().then(async status=>{
                 this.client.prefixlist = await this.client.db.get('prefix')
                 this.client.blacklist = await this.client.db.get('blacklist')
-            })
-            var date = new Date()
-            this.client.uptimes = `${date.getUTCHours()<10?"0"+date.getUTCHours():date.getUTCHours()}:${date.getUTCMinutes()<10?"0"+date.getUTCMinutes():date.getUTCMinutes()}:${date.getUTCSeconds()<10?"0"+date.getUTCSeconds():date.getUTCSeconds()} UTC`
+                this.client.errmsg = await this.client.db.get('errmsg')
+                this.client.welchannel = await this.client.db.get('welchannel')
+            }) 
+            this.client.uptimes = new Date().toUTCString()
         })
         this.client.on('guildCreate',async guild=>{
             var channel = guild.channels.find(m => m.name=="bottest")
@@ -56,14 +57,18 @@ module.exports = class Bot{
             console.log(this.offline)
         })
         this.client.on('guildMemberAdd',async member=>{
-            var channel = member.guild.channels.find(c=>c.name=="everything")
-            if(channel==undefined) return
+            var gindex = this.client.welchannel.findIndex(g=>g.id==member.guild.id)
+            if(gindex==-1) return console.log("err1")
+            var channel = member.guild.channels.find(c=>c.name==this.client.welchannel[gindex].list[0])
+            if(channel==undefined) return console.log("No channel");   
             let grlist = await this.client.db.get('welcome')
-            if(grlist!=null){
+            if(grlist.length>0){
                 let index = grlist.findIndex(m=>m.id==member.guild.id)
                 if(index!=-1){
-                    let index2 = Math.floor(Math.random()*grlist[index].list.length)
-                    return channel.send(grlist[index].list[index2].replace("@user",`<@${member.id}>`))
+                    if(grlist[index].list.length>0){
+                        let index2 = Math.floor(Math.random()*grlist[index].list.length)
+                        return channel.send(grlist[index].list[index2].replace("@user",`<@${member.id}>`))
+                    }
                 }
             }
             return channel.send(`Hello there, ${member}!`)
@@ -77,6 +82,12 @@ module.exports = class Bot{
             if(message.channel.type=="dm") return this.client.channels.get('533306452002209802').send(new Discord.RichEmbed()
             .setAuthor(message.author.username)
             .setDescription(message.content))
+
+            // Display list of command
+            if(message.content===dprefix+"help"){
+                showCommands(new Discord.RichEmbed(),this.client.commands,channel);
+                return;
+            }
             // check prefix
             let index = this.client.prefixlist.findIndex(m=>m.id==message.guild.id)
             try {
@@ -94,11 +105,6 @@ module.exports = class Bot{
             let content =  message.content.substr(prefix.length,message.content.length);
             let commandName = content.split(" ")[0];
             let args = content.substr(commandName.length+1,content.length);
-            // Display list of command
-            if(commandName=="help"){
-                showCommands(new Discord.RichEmbed(),this.client.commands,channel);
-                return;
-            }
 
             if(commandName=="access"){
                 if(message.author.id!=config.ownerid) return message.channel.send("```Owner only command!```")
@@ -110,8 +116,14 @@ module.exports = class Bot{
                 message.client.db.get('custom').then(data=>{
                     var index = data.findIndex(g=>g.id==message.guild.id)
                     if(index<0) return console.log("Guild id not found");
+
                     var tindex = data[index].list.findIndex(t=>t.name==commandName)
-                    if(tindex<0) return message.channel.send("```Command not found!```")
+                    if(tindex<0){
+                        let errmsg = message.client.errmsg[index].list
+                        let ran = Math.floor(Math.random()*errmsg.length)
+                        msg = message.client.errmsg[index].list[ran].replace("@user",`**${message.member.nickname}**`)
+                        return message.channel.send()
+                    }
                     return message.channel.send(data[index].list[tindex].content)
                 })
                 return
@@ -141,11 +153,11 @@ module.exports = class Bot{
                 }, cdTime);  
 
                 try {
-                    if(command.info.category=="owner"&&message.author.id!=process.env.owner){
+                    if(command.info.category=="owner" && message.author.id!=process.env.owner){
                         return message.channel.send("```You can't use this command!```");
                     }
                     if(command.info.nsfw && !message.channel.nsfw) return message.channel.send("( ͡° ͜ʖ ͡°) Please go to `NSFW` place");
-                    command.run(message,args);
+                    if(command.info.ishide == false || command.info.ishide==undefined) command.run(message,args);
                 } catch (error) {
                     console.log(error);
                 }

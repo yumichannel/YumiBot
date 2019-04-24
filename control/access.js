@@ -1,5 +1,5 @@
-module.exports=function(message,args){
-    const config = require('../model/config')
+const Discord = require('discord.js')
+module.exports=function(message= new Discord.Message,args){
     var mode = args.split(" ")[0]
     let option = args.substring(mode.length+1);
     if(mode=="eval"){
@@ -8,7 +8,9 @@ module.exports=function(message,args){
     if(mode=="redis"){
         _redis(option);
     }
-
+    if(mode=="test"){
+        _test(option)
+    }
     function _redis(option) {
         option = option.split(" ");
         var key
@@ -97,4 +99,35 @@ module.exports=function(message,args){
             return text;
     }
     
+    function _test(option){
+        var param = {}
+        switch(option){
+            case "guildMemberAdd":
+                param = message.member
+                test()
+                break
+            case "message":
+                message.channel.fetchMessages().then(m=>{
+                    mlist = m.filter(mes=>mes.author.id==message.client.user.id)
+                    param = mlist.random()
+                    test()
+                })
+                break
+            case "guildCreate":
+                param = message.guild
+                test()
+                break
+            default:
+                param = {}
+                break
+        }
+        function test() {
+            try {
+                message.client.emit(option,param)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
+
 }
