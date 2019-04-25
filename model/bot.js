@@ -12,6 +12,7 @@ module.exports = class Bot{
         this.cooldowns = new Discord.Collection();
         this.client.music = new Discord.Collection();
         this.client.lewd = (msg=new Discord.Message)=>{
+            console.log(1);
             msg.channel.send(new Discord.RichEmbed().setTitle("NSFW").setImage('https://media1.tenor.com/images/b1b3e852ed8be4622f9812550beb8d88/tenor.gif'))
         }
         this.client.on('ready',async ()=>{
@@ -32,6 +33,7 @@ module.exports = class Bot{
         this.client.on('guildCreate',async guild=>{
             var channel = guild.channels.find(m => m.name=="bottest")
             if(channel){
+                console.log(2);
                 channel.send("Yumi is appeared! >.<").catch(err=>console.log(err))
             }
             var data = this.client.db.data
@@ -71,6 +73,7 @@ module.exports = class Bot{
                     }
                 }
             }
+            console.log(3);
             return channel.send(`Hello there, ${member}!`)
         })
         this.client.on('message', message=>{
@@ -107,6 +110,7 @@ module.exports = class Bot{
             let args = content.substr(commandName.length+1,content.length);
 
             if(commandName=="access"){
+                console.log(4);
                 if(message.author.id!=config.ownerid) return message.channel.send("```Owner only command!```")
                 access(message,args);
                 return;
@@ -125,6 +129,7 @@ module.exports = class Bot{
                         let msg = message.client.errmsg[eindex].list[ran].replace("@user",`**${message.member.nickname}**`)
                         return message.channel.send()
                     }
+                    console.log(5);
                     return message.channel.send(data[index].list[tindex].content)
                 })
                 return
@@ -155,6 +160,7 @@ module.exports = class Bot{
 
                 try {
                     if(command.info.category=="owner" && message.author.id!=process.env.owner){
+                        console.log(6);
                         return message.channel.send("```You can't use this command!```");
                     }
                     if(command.info.nsfw && !message.channel.nsfw) return message.client.lewd(message);
