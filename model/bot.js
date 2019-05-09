@@ -127,7 +127,7 @@ module.exports = class Bot{
                         let errmsg = message.client.errmsg[eindex].list
                         let ran = Math.floor(Math.random()*errmsg.length)
                         let msg = message.client.errmsg[eindex].list[ran].replace("@user",`**${message.member.nickname}**`)
-                        return message.channel.send()
+                        return message.channel.send(msg)
                     }
                     console.log(5);
                     return message.channel.send(data[index].list[tindex].content)

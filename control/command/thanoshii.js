@@ -1,4 +1,4 @@
-const Canvas = require('canvas')
+﻿const Canvas = require('canvas')
 const Discord = require('discord.js')
 const snekfetch =  require('snekfetch')
 module.exports={
@@ -6,8 +6,7 @@ module.exports={
         name:'thanoshii',
         description:"Thanos turn u to dust",
         category:"image",
-        ishide: true
-    },
+        ishide: false},
     async run(message,args){
         const canvas = Canvas.createCanvas(200,200)
         const context = canvas.getContext('2d')
