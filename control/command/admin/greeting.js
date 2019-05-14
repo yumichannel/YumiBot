@@ -1,4 +1,4 @@
-const config = require('../../model/config')
+const config = require('../../../model/config.js')
 module.exports={
     info:{
         name:"greeting",

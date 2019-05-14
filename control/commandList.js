@@ -15,8 +15,13 @@ module.exports = function(embed,collection,channel){
     });
     var index = 0;
     for(let category in categories){
+        // console.log(category);
+        
         var namelist = categories[category].join(", ")
-        embed.addField(category,namelist)
+        // console.log(namelist);
+        
+        embed.addField(category,namelist||"<empty>")
+        
     }
     channel.send(embed);
 }
