@@ -1,4 +1,4 @@
-const redisurl = require('../../model/config.js').redis
+const redisurl = require('../../../model/config.js').redis
 const Discord = require('discord.js');
 module.exports = {
     info: {

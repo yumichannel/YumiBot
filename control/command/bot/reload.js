@@ -1,4 +1,4 @@
-const load = require('../loadCommand.js');
+const load = require('../../loadCommand.js');
 const Discord = require('discord.js')
 module.exports = {
     info:{
